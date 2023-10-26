@@ -1,0 +1,80 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Result
+{
+
+    /*
+     * Complete the 'countingValleys' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts following parameters:
+     *  1. INTEGER steps
+     *  2. STRING path
+     */
+
+    public static int countingValleys(int steps, string path)
+    {
+
+
+        int count = 0;
+        int primeFlag = 0;
+        int height = 0;
+
+        //Go through path while evaluating everything
+        for(int i = 0; i < steps; i++){
+            
+            //------------------Adjust height
+            if(path[i] == 'U'){
+                height++;
+            }
+            else if(path[i] == 'D'){
+                height--;
+            }
+
+            //-----------------Evaluate if entering a valley
+            if(height == -1 && primeFlag == 0){
+                primeFlag = 1;
+            }
+
+            //----------------Evaluate if leaving valley
+            if(height == 0 && primeFlag == 1){
+                count++;
+                primeFlag = 0;
+            }
+        }
+
+        return count;
+    }
+
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int steps = Convert.ToInt32(Console.ReadLine().Trim());
+
+        string path = Console.ReadLine();
+
+        int result = Result.countingValleys(steps, path);
+
+        textWriter.WriteLine(result);
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
